@@ -1,0 +1,18 @@
+<table class="table">
+  <thead>
+    <tr>
+      <td>Title</td>
+      <td>Due Date</td>
+      <td>Completed</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% for(var i=0; i < allTodos.length; i++) { %>
+    <tr>
+      <td><%= allTodos[i].title %></td>
+      <td><%= allTodos[i].dueDate %></td>
+      <td><%= allTodos[i].completed %></td>
+    </tr>
+    <% } %>
+  </tbody>
+</table>
