@@ -4,27 +4,75 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="<%= csrfToken %>" />
     <link rel="stylesheet" href="/css/styles.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Document</title>
+    <script>
+      let token = document
+        .querySelector('meta[name="csrf-token"]')
+        .getAttribute("content");
+
+      function updateTodo(id, completed) {
+        fetch(`/todos/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            _csrf: token,
+            completed: completed,
+          }),
+        }).then((res) => {
+          if (res.ok) {
+            window.location.reload();
+          }
+        });
+      }
+
+      function deleteTodo(id) {
+        fetch(`/todos/${id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            _csrf: token,
+          }),
+        })
+          .then((res) => {
+            if (res.ok) {
+              window.location.reload();
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    </script>
   </head>
   <body>
     <div class="grid grid-cols-6">
       <div class="col-start-3 col-span-2">
         <%- include('header.ejs') %>
-        <form>
+        <form method="post" action="/todos">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
           <div class="flex gap-2 py-4">
             <div class="flex-auto">
               <input
                 type="text"
+                name="title"
                 placeholder="What's next?"
                 class="border border-gray-300 rounded text-gray-900 w-full p-2"
+                required
               />
             </div>
             <div class="flex-auto">
               <input
+                name="dueDate"
                 type="date"
                 class="border border-gray-300 rounded text-gray-900 w-full p-2 leading-4"
+                required
               />
             </div>
             <div class="flex-none">

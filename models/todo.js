@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
 
-    static getTodos() {
+    static async getTodos() {
       return this.findAll();
     }
 
@@ -19,40 +19,53 @@ module.exports = (sequelize, DataTypes) => {
       return this.create({ title: title, dueDate: dueDate, completed: false });
     }
 
-    static overDue() {
+    static async overDue() {
       return this.findAll({
         where: {
           dueDate: {
             [Op.lt]: new Date().toISOString(),
           },
+          completed: false,
         },
       });
     }
-    static dueToday() {
+    static async dueToday() {
       return this.findAll({
         where: {
           dueDate: {
             [Op.eq]: new Date().toISOString(),
           },
+          completed: false,
         },
       });
     }
-    static dueLater() {
+    static async dueLater() {
       return this.findAll({
         where: {
           dueDate: {
             [Op.gt]: new Date().toISOString(),
           },
+          completed: false,
         },
       });
     }
 
-    markAsCompleted() {
-      return this.update({ completed: true });
+    static async completedItems() {
+      return this.findAll({
+        where: {
+          completed: true,
+        },
+      });
     }
 
-    delete() {
-      return this.destroy();
+    static async remove(id) {
+      return this.destroy({
+        where: { id },
+      });
+    }
+
+    setCompletionStatus(completed) {
+      return this.update({ completed });
     }
   }
   Todo.init(

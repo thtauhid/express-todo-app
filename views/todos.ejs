@@ -1,66 +1,73 @@
 <div>
-  <h5 class="inline-block">Overdue</h5>
-  <span id="count-overdue" class="bg-gray-300 px-2 rounded"
-    ><%= overDue.length %></span
+  <h5 class="inline-block">over due</h5>
+  <span id="count-data.overDue" class="bg-gray-300 px-2 rounded"
+    ><%= data.overDue.length %></span
   >
+  <ul class="list-none">
+    <% for(var i=0; i < data.overDue.length; i++) { %>
+    <li class="Todo-Item">
+      <div
+        class="flex items-center w-fit my-2 px-2 py-1 rounded hover:bg-purple-50"
+      >
+        <input type="checkbox" id="todocheck-<%= data.overDue[i].id %>"
+        class="w-4 h-4 text-blue-600 bg-green-100 rounded border
+        border-gray-300" <%= data.overDue[i].completed ? 'checked' : '' %>
+        onclick="updateTodo(<%= data.overDue[i].id %>, <%=
+        !(data.overDue[i].completed) %>)" />
+        <label
+          for="todocheck-<%= data.overDue[i].id %>"
+          class="m-2 text-sm text-gray-600 cursor-pointer"
+          ><%= data.overDue[i].title %></label
+        >
+        <a
+          href="#"
+          class="hidden trash-icon ml-2"
+          onclick="deleteTodo(<%=data.overDue[i].id %>)"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-4 h-4"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+            />
+          </svg>
+        </a>
+      </div>
+    </li>
+    <% } %>
+  </ul>
 
-  <ul class="list-none">
-    <% for(var i=0; i < overDue.length; i++) { %>
-    <li class="Todo-Item">
-      <div
-        class="flex items-center w-fit my-2 px-2 py-1 rounded hover:bg-purple-50"
-      >
-        <input
-          type="checkbox"
-          id="todocheck-<%= allTodos[i].id %>"
-          class="w-4 h-4 text-blue-600 bg-green-100 rounded border border-gray-300"
-        />
-        <label
-          for="todocheck-<%= allTodos[i].id %>"
-          class="m-2 text-sm text-gray-600 cursor-pointer"
-          ><%= overDue[i].title %></label
-        >
-        <a href="#" class="hidden trash-icon ml-2"
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="w-4 h-4"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-            />
-          </svg>
-        </a>
-      </div>
-    </li>
-    <% } %>
-  </ul>
-  <h5 class="inline-block">Due Today</h5>
+  <h5 class="inline-block">due today</h5>
   <span id="count-due-today" class="bg-gray-300 px-2 rounded"
-    ><%= dueToday.length %></span
+    ><%= data.dueToday.length %></span
   >
   <ul class="list-none">
-    <% for(var i=0; i < dueToday.length; i++) { %>
+    <% for(var i=0; i < data.dueToday.length; i++) { %>
     <li class="Todo-Item">
       <div
         class="flex items-center w-fit my-2 px-2 py-1 rounded hover:bg-purple-50"
       >
-        <input
-          type="checkbox"
-          id="todocheck-<%= allTodos[i].id %>"
-          class="w-4 h-4 text-blue-600 bg-green-100 rounded border border-gray-300"
-        />
+        <input type="checkbox" id="todocheck-<%= data.dueToday[i].id %>"
+        class="w-4 h-4 text-blue-600 bg-green-100 rounded border
+        border-gray-300" <%= data.dueToday[i].completed ? 'checked' : '' %>
+        onclick="updateTodo(<%= data.dueToday[i].id %>, <%=
+        !(data.dueToday[i].completed) %>)" />
         <label
-          for="todocheck-<%= allTodos[i].id %>"
+          for="todocheck-<%= data.dueToday[i].id %>"
           class="m-2 text-sm text-gray-600 cursor-pointer"
-          ><%= dueToday[i].title %></label
+          ><%= data.dueToday[i].title %></label
         >
-        <a href="#" class="hidden trash-icon ml-2"
+        <a
+          href="#"
+          class="hidden trash-icon ml-2"
+          onclick="deleteTodo(<%= data.dueToday[i].id %>)"
           ><svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -80,28 +87,77 @@
     </li>
     <% } %>
   </ul>
-  <h5 class="inline-block">Due Later</h5>
+
+  <h5 class="inline-block">due later</h5>
   <span id="count-due-later" class="bg-gray-300 px-2 rounded"
-    ><%= dueLater.length %></span
+    ><%= data.dueLater.length %></span
   >
   <ul class="list-none">
-    <% for(var i=0; i < dueLater.length; i++) { %>
+    <% for(var i=0; i < data.dueLater.length; i++) { %>
     <li class="Todo-Item">
       <div
         class="flex items-center w-fit my-2 px-2 py-1 rounded hover:bg-purple-50"
       >
-        <input
-          type="checkbox"
-          id="todocheck-<%= allTodos[i].id %>"
-          class="w-4 h-4 text-blue-600 bg-green-100 rounded border border-gray-300"
-        />
+        <input type="checkbox" id="todocheck-<%= data.dueLater[i].id %>"
+        class="w-4 h-4 text-blue-600 bg-green-100 rounded border
+        border-gray-300" <%= data.dueLater[i].completed ? 'checked' : '' %>
+        onclick="updateTodo(<%= data.dueLater[i].id %>, <%=
+        !(data.dueLater[i].completed) %>)" />
         <label
-          for="todocheck-<%= allTodos[i].id %>"
+          for="todocheck-<%= data.dueLater[i].id %>"
           class="m-2 text-sm text-gray-600 cursor-pointer"
-          ><%= dueLater[i].title %></label
+          ><%= data.dueLater[i].title %></label
         >
-        <a href="#" class="hidden trash-icon ml-2"
+        <a
+          href="#"
+          class="hidden trash-icon ml-2"
+          onclick="deleteTodo(<%= data.dueLater[i].id %>)"
           ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-4 h-4"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+            />
+          </svg>
+        </a>
+      </div>
+    </li>
+    <% } %>
+  </ul>
+
+  <h5 class="inline-block">completed items</h5>
+  <span id="count-data.completedItems" class="bg-gray-300 px-2 rounded"
+    ><%= data.completedItems.length %></span
+  >
+  <ul class="list-none">
+    <% for(var i=0; i < data.completedItems.length; i++) { %>
+    <li class="Todo-Item">
+      <div
+        class="flex items-center w-fit my-2 px-2 py-1 rounded hover:bg-purple-50"
+      >
+        <input type="checkbox" id="todocheck-<%= data.completedItems[i].id %>"
+        class="w-4 h-4 text-blue-600 bg-green-100 rounded border
+        border-gray-300" <%= data.completedItems[i].completed ? 'checked' : ''
+        %> onclick="updateTodo(<%= data.completedItems[i].id %>, <%=
+        !(data.completedItems[i].completed) %>)" />
+        <label
+          for="todocheck-<%= data.completedItems[i].id %>"
+          class="m-2 text-sm text-gray-600 cursor-pointer"
+          ><%= data.completedItems[i].title %></label
+        >
+        <a
+          href="#"
+          class="hidden trash-icon ml-2"
+          onclick="deleteTodo(<%=data.completedItems[i].id %>)"
+        >
+          <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
