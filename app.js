@@ -21,12 +21,10 @@ app.get("/", async function (request, response) {
 
   if (request.accepts("html")) {
     return response.render("index", {
-      data: {
-        overDue,
-        dueToday,
-        dueLater,
-        completedItems,
-      },
+      overDue,
+      dueToday,
+      dueLater,
+      completedItems,
       csrfToken: request.csrfToken(),
     });
   } else {
