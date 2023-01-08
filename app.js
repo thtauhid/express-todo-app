@@ -139,7 +139,9 @@ app.post(
       return response.redirect("/todos");
     } catch (error) {
       console.log(error);
-      return response.status(422).json(error);
+      // Send flash
+      request.flash("error", "Error adding Todo");
+      return response.redirect("/todos");
     }
   }
 );
