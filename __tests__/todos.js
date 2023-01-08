@@ -106,36 +106,38 @@ describe("Todo Application", function () {
     expect(updatedParsedResponse.completed).toBe(true);
   });
 
-  // test("Fetches all todos", async () => {
-  //   let res = await agent.get("/todos");
-  //   let csrfToken = getCsrfToken(res.text);
+  test("Fetches all todos", async () => {
+    const agent = request.agent(server);
+    await login(agent, "abc@xyz.com", "password");
+    let res = await agent.get("/todos");
+    let csrfToken = getCsrfToken(res.text);
 
-  //   // Creating one todo
-  //   await agent.post("/todos").send({
-  //     title: "Buy xbox",
-  //     dueDate: new Date().toISOString(),
-  //     completed: false,
-  //     _csrf: csrfToken,
-  //   });
+    // Creating one todo
+    await agent.post("/todos").send({
+      title: "Buy xbox",
+      dueDate: new Date().toISOString(),
+      completed: false,
+      _csrf: csrfToken,
+    });
 
-  //   // Creating another todo
-  //   res = await agent.get("/todos");
-  //   csrfToken = getCsrfToken(res.text);
-  //   await agent.post("/todos").send({
-  //     title: "Buy ps3",
-  //     dueDate: new Date().toISOString(),
-  //     completed: false,
-  //     _csrf: csrfToken,
-  //   });
+    // Creating another todo
+    res = await agent.get("/todos");
+    csrfToken = getCsrfToken(res.text);
+    await agent.post("/todos").send({
+      title: "Buy ps3",
+      dueDate: new Date().toISOString(),
+      completed: false,
+      _csrf: csrfToken,
+    });
 
-  //   const response = await agent
-  //     .get("/todos")
-  //     .set("Accept", "application/json");
-  //   const parsedResponse = JSON.parse(response.text);
-  //   console.log({ parsedResponse });
-  //   expect(parsedResponse.length).toBe(4);
-  //   expect(parsedResponse[3]["title"]).toBe("Buy ps3");
-  // });
+    const response = await agent
+      .get("/todos")
+      .set("Accept", "application/json");
+    const parsedResponse = JSON.parse(response.text);
+    console.log({ parsedResponse });
+    expect(parsedResponse.dueToday.length).toBe(3);
+    expect(parsedResponse.dueToday[2]["title"]).toBe("Buy ps3");
+  });
 
   test("Delete a todo", async () => {
     const agent = request.agent(server);

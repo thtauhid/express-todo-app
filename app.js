@@ -48,11 +48,14 @@ passport.use(
         },
       })
         .then(async (user) => {
-          const result = await bcrypt.compare(password, user.password);
-          if (result) return done(null, user);
-          return done(null, false, { message: "Invalid Password" });
+          if (user) {
+            const result = await bcrypt.compare(password, user.password);
+            if (result) return done(null, user);
+          }
+          return done(null, false, { message: "Invalid Credentials" });
         })
         .catch((err) => {
+          console.log({ err });
           return err;
         });
     }
@@ -140,7 +143,7 @@ app.post(
     } catch (error) {
       console.log(error);
       // Send flash
-      request.flash("error", "Error adding Todo");
+      request.flash("error", error.message);
       return response.redirect("/todos");
     }
   }
@@ -186,13 +189,18 @@ app.get("/signup", async function (request, response) {
 });
 
 app.post("/users", async function (request, response) {
-  const { firstName, lastName, email, password } = request.body;
-
-  // Hash the password
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
-  console.log({ hashedPassword });
-  // Create a user
   try {
+    const { firstName, lastName, email, password } = request.body;
+    console.log({
+      firstName,
+      lastName,
+      email,
+      password,
+    });
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    console.log({ hashedPassword });
+    // Create a user
     const user = await User.create({
       firstName,
       lastName,
@@ -205,7 +213,9 @@ app.post("/users", async function (request, response) {
     });
   } catch (error) {
     console.log(error);
-    response.json({ error });
+    // Send flash
+    request.flash("error", error.message);
+    response.redirect("/signup");
   }
 });
 

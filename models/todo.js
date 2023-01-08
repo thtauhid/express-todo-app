@@ -77,7 +77,19 @@ module.exports = (sequelize, DataTypes) => {
   }
   Todo.init(
     {
-      title: DataTypes.STRING,
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: {
+            msg: "Title is required.",
+          },
+          len: {
+            args: [5],
+            msg: "Title must be at least 5 characters long.",
+          },
+        },
+      },
       dueDate: DataTypes.DATEONLY,
       completed: DataTypes.BOOLEAN,
     },
