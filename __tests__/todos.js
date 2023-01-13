@@ -229,4 +229,53 @@ describe("Todo Application", function () {
     updatedParsedResponse = JSON.parse(markIncompleteResponse.text);
     expect(updatedParsedResponse.completed).toBe(false);
   });
+
+  test("One user cannot delete another user's todo", async () => {
+    // Login to user A
+    const agent = request.agent(server);
+    await login(agent, "abc@xyz.com", "password");
+
+    // Create a todo for user A
+    let res = await agent.get("/todos");
+    let csrfToken = getCsrfToken(res.text);
+    await agent.post("/todos").send({
+      title: "Try and delete this",
+      dueDate: new Date().toISOString(),
+      completed: false,
+      _csrf: csrfToken,
+    });
+
+    const groupedTodosResponse = await agent
+      .get("/todos")
+      .set("Accept", "application/json");
+    const parsedGroupedTodosResponse = JSON.parse(groupedTodosResponse.text);
+    const dueTodayCount = parsedGroupedTodosResponse.dueToday.length;
+    const latestTodo = parsedGroupedTodosResponse.dueToday[dueTodayCount - 1];
+
+    // Logout from user A
+    await agent.get("/signout");
+
+    // Create a user B
+    res = await agent.get("/signup");
+    csrfToken = getCsrfToken(res.text);
+    await agent.post("/users").send({
+      email: "testuser2@xyz.com",
+      password: "password",
+      firstName: "John",
+      lastName: "Doe",
+      _csrf: csrfToken,
+    });
+
+    // Try to delete user A's todo from user B's account
+    res = await agent.get("/todos");
+    csrfToken = getCsrfToken(res.text);
+
+    const deleteTodo = await agent.delete(`/todos/${latestTodo.id}`).send({
+      _csrf: csrfToken,
+    });
+
+    // Check if the todo is not deleted
+    const parsedDeletedTodo = JSON.parse(deleteTodo.text);
+    expect(parsedDeletedTodo.success).toBe(false);
+  });
 });

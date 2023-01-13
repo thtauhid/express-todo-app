@@ -66,6 +66,9 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     static async remove(id, userId) {
+      const todo = await this.findByPk(id);
+      if (todo.userId !== userId) throw new Error("Unauthorized");
+
       return this.destroy({
         where: { id, userId },
       });
