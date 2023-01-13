@@ -157,7 +157,8 @@ app.put(
     const todo = await Todo.findByPk(request.params.id);
     try {
       const updatedTodo = await todo.setCompletionStatus(
-        request.body.completed
+        request.body.completed,
+        request.user.id
       );
       return response.json(updatedTodo);
     } catch (error) {

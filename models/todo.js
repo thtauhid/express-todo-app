@@ -74,7 +74,8 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
 
-    setCompletionStatus(completed) {
+    setCompletionStatus(completed, userId) {
+      if (this.userId !== userId) throw new Error("Unauthorized");
       return this.update({ completed });
     }
   }
