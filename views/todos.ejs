@@ -55,6 +55,7 @@
     <div class="grid grid-cols-6">
       <div class="col-start-3 col-span-2">
         <%- include('header.ejs') %>
+        <p>Welcome, <%= user.firstName %> <%= user.lastName %></p>
         <a href="/signout" class="text-green-600">Signout</a>
         <form method="post" action="/todos">
           <% if(messages && messages.error && messages.error.length > 0)  { %>

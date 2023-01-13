@@ -97,6 +97,7 @@ app.get(
 
     if (request.accepts("html")) {
       return response.render("todos", {
+        user: request.user,
         overDue,
         dueToday,
         dueLater,
