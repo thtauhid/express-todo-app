@@ -84,7 +84,7 @@ jobs:
 
       - name: Deploy
         run: |
-          sshpass -p "${{ secrets.VPS_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} 'cd /var/www/todo/express-todo-app/fail && git pull && npm ci && pm2 restart all'
+          sshpass -p "${{ secrets.VPS_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} 'cd /var/www/todo/express-todo-app && git pull && npm ci && pm2 restart all'
 
       # Only run this step if the deployment is successful
       - name: Notify Success
