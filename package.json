@@ -11,7 +11,7 @@
     "clean:start": "npm run pretest && NODE_ENV=test npm start",
     "cy:test": "npx cypress run",
     "prepare": "husky install",
-    "lint": "eslint **/*.js"
+    "lint": "eslint"
   },
   "lint-staged": {
     "*.js": [
