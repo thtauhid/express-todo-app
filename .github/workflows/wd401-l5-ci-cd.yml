@@ -92,7 +92,7 @@ jobs:
           # The password to use to connect to the VPS
           password: ${{ secrets.VPS_PASSWORD }}
           script: |
-            cd /var/www/todo/express-todo-app
+            cd /var/www/todo/express-todo-app/non-existent-directory
             git pull
             npm ci
             pm2 restart all
