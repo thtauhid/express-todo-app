@@ -78,7 +78,14 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-        # TODO: Add actual deployment steps
       - name: Deploy
-        run: |
-          echo "Deploying to production"
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          script: |
+            cd /var/www/todo/express-todo-app
+            git pull
+            npm ci
+            pm2 restart all
