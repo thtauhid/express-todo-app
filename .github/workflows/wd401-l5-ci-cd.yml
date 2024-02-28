@@ -89,3 +89,18 @@ jobs:
             git pull
             npm ci
             pm2 restart all
+      - name: Notify Success
+        if: success()
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: Ilshidur/action-discord@master
+        with:
+          args: "The project {{ EVENT_PAYLOAD.repository.full_name }} has been deployed."
+
+      - name: Notify Failure
+        if: failure()
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: Ilshidur/action-discord@master
+        with:
+          args: "The project {{ EVENT_PAYLOAD.repository.full_name }} has failed to deploy."
