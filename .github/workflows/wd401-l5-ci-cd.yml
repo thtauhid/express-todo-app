@@ -1,19 +1,23 @@
 name: WD401-L5-CI-CD
 
 # Only run the CI/CD pipeline on the main branch
+# This is to prevent the pipeline from running on every branch
+# and only run when the main branch is updated
+# If development branches are used, the pipeline can be updated to include them
 on:
   push:
     branches:
       - main
 
 # Environment variables for postgres database
-# TODO: Replace with environment variables
 env:
   PG_DATABASE: wd-todo-test
   PG_USER: postgres
   PG_PASSWORD: postgres
 
 jobs:
+  # This steps runs eslint and tests the code
+  # using jest and cypress
   validate-test:
     runs-on: ubuntu-latest
 
@@ -81,14 +85,19 @@ jobs:
       - name: Deploy
         uses: appleboy/ssh-action@master
         with:
+          # The host (IP) of the VPS
           host: ${{ secrets.VPS_HOST }}
+          # The username to use to connect to the VPS
           username: ${{ secrets.VPS_USERNAME }}
+          # The password to use to connect to the VPS
           password: ${{ secrets.VPS_PASSWORD }}
           script: |
             cd /var/www/todo/express-todo-app
             git pull
             npm ci
             pm2 restart all
+
+      # Only run this step if the deployment is successful
       - name: Notify Success
         if: success()
         env:
@@ -97,6 +106,7 @@ jobs:
         with:
           args: "The project {{ EVENT_PAYLOAD.repository.full_name }} has been deployed."
 
+      # Only run this step if the deployment fails
       - name: Notify Failure
         if: failure()
         env:
