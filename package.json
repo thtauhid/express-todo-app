@@ -10,7 +10,8 @@
     "test": "NODE_ENV=test jest --detectOpenHandles",
     "clean:start": "npm run pretest && NODE_ENV=test npm start",
     "cy:test": "npx cypress run",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "lint": "eslint **/*.js"
   },
   "lint-staged": {
     "*.js": [

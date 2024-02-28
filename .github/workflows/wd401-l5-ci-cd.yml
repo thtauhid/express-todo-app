@@ -14,7 +14,7 @@ env:
   PG_PASSWORD: postgres
 
 jobs:
-  build:
+  validate-test:
     runs-on: ubuntu-latest
 
     services:
@@ -40,13 +40,15 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # - name: Code Validation
-      #   run: |
-
-      # Install dependencies
+        # Install dependencies
       - name: Install
         run: |
           npm ci
+
+      # Validate the code
+      - name: Code Validation
+        run: |
+          npm run lint
 
       # Test the application
       - name: Run Unit Tests
@@ -68,8 +70,15 @@ jobs:
           npm install cypress cypress-json-results
           npx cypress run
 
-      # - name: Deploy
-      #   run: |
+  deploy:
+    runs-on: ubuntu-latest
+    # Only run the deployment job if the validate-test job is successful
+    needs: validate-test
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-      # - name: Report
-      #   run: |
+        # TODO: Add actual deployment steps
+      - name: Deploy
+        run: |
+          echo "Deploying to production"
