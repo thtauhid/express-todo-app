@@ -1,9 +1,9 @@
-version: '3.8'
+version: "3.8"
 services:
   # First service. Runs the app's code
   app:
     # Set the build context to the current directory
-    build: 
+    build:
       context: .
       target: prodcution
     image: express-todo-app:prodcution
