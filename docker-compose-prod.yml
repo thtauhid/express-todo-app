@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  # First service. Runs the app's code
+  app:
+    # Set the build context to the current directory
+    build: 
+      context: .
+      target: prodcution
+    image: express-todo-app:prodcution
+    # Mount the volume to persist the data
+    volumes:
+      - .:/app
+    # Expose the port
+    ports:
+      - "3000:3000"
+    # Set the environment variables (file)
+    env_file:
+      - .env
+    # Set depends_on to make sure that the database service is running before the app
+    depends_on:
+      - db
+
+  # Second service. Runs the database
+  db:
+    # Use the official postgres image from the Docker Hub.
+    image: postgres:15
+    # Mount the volume to persist the data
+    volumes:
+      - pg-prod-data:/var/lib/postgresql/data
+    # Set the environment variables (file)
+    env_file:
+      - .env
+    # Map the environment variables
+    environment:
+      DATABASE_URL: $DATABASE_URL
+
+volumes:
+  pg-prod-data:
